@@ -4,7 +4,7 @@ import LoginSignup from './Components/LoginSignup';
 function App() {
   return (
     <div>
-      <LoginSignup />
+      <LoginSignup pageTitle="Billing-Login/SignUp"/>
     </div>
   );
 }
