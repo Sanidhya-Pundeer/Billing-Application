@@ -4,7 +4,7 @@ const encryptPassword = require('../utils/bcrypt');
 const loginController = async (req, res) => {
     try {
         const {userMail, userPassword} = req.body;
-        const user = await userModel.findOne({userMail, userPassword});
+        const user = await userModel.findOne({userMail});
 
         if(!user) {
             return res.status(400).json({
@@ -18,6 +18,7 @@ const loginController = async (req, res) => {
             });
         }
         else {
+            
             return res.status(400).json({
                 message: 'Invalid credentials'
             });
@@ -29,11 +30,11 @@ const loginController = async (req, res) => {
 
 const registerController = async (req, res) => {
     try {
-        const {userId, userMail, userPassword} = req.body;
+        const {userName, userMail, userPassword} = req.body;
         const hashedPwd = encryptPassword.hasPwd(userPassword);
 
         const user = await userModel.create({
-            userId: userId,
+            userName: userName,
             userMail: userMail,
             userPassword: hashedPwd
         });
@@ -49,8 +50,13 @@ const registerController = async (req, res) => {
             });
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal error" });
+        if (error.code === 11000 && error.keyPattern && error.keyPattern.userMail) {
+            // Handle duplicate key error for userMail
+            res.status(400).json({ message: 'UserMail already exists' });
+        } else {
+            console.error(error);
+            res.status(500).json({ message: 'Internal error' });
+        }
     }
 };    
 

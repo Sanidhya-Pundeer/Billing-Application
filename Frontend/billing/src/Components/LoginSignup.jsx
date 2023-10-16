@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./LoginSignup.css";
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import email from "../Components/Assets/email.png";
 import password from "../Components/Assets/password.png";
@@ -10,9 +11,9 @@ import login from "./Assets/login.png";
 
 const LoginSignup = (props) => {
   const [action, setAction] = useState("SignUp");
-  const [name, setName] = useState("");
-  const [emailValue, setEmailValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
+  const [userName, setName] = useState("");
+  const [userMail, setEmailValue] = useState("");
+  const [userPassword, setPasswordValue] = useState("");
 
   useEffect(() => {
     document.title = props.pageTitle;
@@ -20,13 +21,13 @@ const LoginSignup = (props) => {
 
   const handleSignUp = async () => {
     const data = {
-      name: name,
-      email: emailValue,
-      password: passwordValue,
+      userName: userName,
+      userMail: userMail,
+      userPassword: userPassword,
     };
     console.log("Data to be sent:", data);
 
-    const url = "YOUR_SIGNUP_API_ENDPOINT"; // Replace with your actual signup API endpoint
+    const url = "http://localhost:5000/api/register"; // Replace with your actual signup API endpoint
 
     try {
       console.log("data", data);
@@ -55,12 +56,12 @@ const LoginSignup = (props) => {
 
   const handleLogin = async () => {
     const data = {
-      email: emailValue,
-      password: passwordValue,
+      userMail: userMail,
+      userPassword: userPassword,
     };
     console.log("Data to be sent:", data);
 
-    const url = "YOUR_LOGIN_API_ENDPOINT"; // Replace with your actual login API endpoint
+    const url = "http://localhost:5000/api/login"; // Replace with your actual login API endpoint
 
     try {
       console.log("data", data);
@@ -108,7 +109,7 @@ const LoginSignup = (props) => {
                 <input
                   type="text"
                   placeholder="Name"
-                  value={name}
+                  value={userName}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
@@ -118,7 +119,7 @@ const LoginSignup = (props) => {
               <input
                 type="email"
                 placeholder="email"
-                value={emailValue}
+                value={userMail}
                 onChange={(e) => setEmailValue(e.target.value)}
               />
             </div>
@@ -127,7 +128,7 @@ const LoginSignup = (props) => {
               <input
                 type="password"
                 placeholder="Password"
-                value={passwordValue}
+                value={userPassword}
                 onChange={(e) => setPasswordValue(e.target.value)}
               />
             </div>

@@ -1,15 +1,16 @@
 const express = require('express');
+const cors = require('cors');
 const connection=require('./connection');
+const userRouter=require('./routes/userRoutes')
 const app = express();
 
+// Enable CORS
+app.use(cors());
 
 app.use(express.json());
-connection()
+connection();
 
-app.use(express.json())
-
-app.routes('/api',adminRoutes)
-app.routes('/api',userRoutes)
+app.use('/api',userRouter)
 
 app.listen(5000, (error) => {
     if (error) {
@@ -18,5 +19,4 @@ app.listen(5000, (error) => {
     else {
         console.log("server started at port 5000");
     }
-
 });

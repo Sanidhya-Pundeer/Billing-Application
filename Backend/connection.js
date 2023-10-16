@@ -1,6 +1,6 @@
-const{defsult:mongoose}=require('mongoose');
+const{default:mongoose}=require('mongoose');
 
-const url="mongodb+srv://riya21csu082:scott@cluster0.wybbamo.mongodb.net/?retryWrites=true&w=majority"
+const url="mongodb+srv://sanyam:0721@cluster0.cuvuh8j.mongodb.net/BillingBackend?retryWrites=true&w=majority";
 
 const connection=()=>{
     mongoose.connect(url).then(()=>{
@@ -10,4 +10,4 @@ const connection=()=>{
     })
 }
 
-module.exports=connection
+module.exports=connection;
