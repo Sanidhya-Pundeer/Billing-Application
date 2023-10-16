@@ -1,11 +1,15 @@
 const express = require('express');
+const connection=require('./connection');
 const app = express();
 
 
 app.use(express.json());
-app.use(express.static('public'))
+connection()
 
+app.use(express.json())
 
+app.routes('/api',adminRoutes)
+app.routes('/api',userRoutes)
 
 app.listen(5000, (error) => {
     if (error) {
@@ -13,8 +17,6 @@ app.listen(5000, (error) => {
     }
     else {
         console.log("server started at port 5000");
-        console.log("heelloooow");
-        console.log("Heyyy");
     }
 
 });
