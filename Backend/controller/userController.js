@@ -32,6 +32,8 @@ const registerController = async (req, res) => {
     try {
         const {userName, userMail, userPassword} = req.body;
         const hashedPwd = encryptPassword.hasPwd(userPassword);
+        console.log('Trying to insert user with email:', userMail);
+
 
         const user = await userModel.create({
             userName: userName,
