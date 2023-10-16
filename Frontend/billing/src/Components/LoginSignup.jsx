@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./LoginSignup.css";
+import {toast} from 'react-toastify';
 
 import email from "../Components/Assets/email.png";
 import password from "../Components/Assets/password.png";
 import person from "../Components/Assets/person.png";
-import sigin from "./Assets/signin-image.jpg";
-import login from "./Assets/login.jpg";
+import sigin from "./Assets/signin.svg";
+import login from "./Assets/login.png";
 
 const LoginSignup = (props) => {
   const [action, setAction] = useState("SignUp");
@@ -39,9 +40,11 @@ const LoginSignup = (props) => {
 
       if (response.ok) {
         // Signup successful, handle success
+        toast.success("Signup successful");
         console.log("Signup successful");
       } else {
         // Handle signup error
+        toast.error("Error signing up");
         console.error("Error signing up");
       }
     } catch (error) {
@@ -71,9 +74,11 @@ const LoginSignup = (props) => {
 
       if (response.ok) {
         // Login successful, handle success
+        toast.success("Login successful");
         console.log("Login successful");
       } else {
         // Handle login error
+        toast.error("Error logging in");
         console.error("Error logging in");
       }
     } catch (error) {
@@ -89,7 +94,7 @@ const LoginSignup = (props) => {
           {action === "SignUp" ? (
             <img className="image" src={sigin} alt="" />
           ) : (
-            <img className="image" src={login} alt="" />
+            <img className="image2" src={login} alt="" />
           )}
         </div>
         <div className="form-container">
@@ -97,7 +102,7 @@ const LoginSignup = (props) => {
             <div className="text">{action}</div>
           </div>
           <div className="inputs">
-            {action !== "login" && (
+            {action !== "Login" && (
               <div className="input">
                 <img src={person} alt="" />
                 <input
@@ -129,7 +134,7 @@ const LoginSignup = (props) => {
           </div>
           <div className="submit-container">
             <div
-              className={action === "login" ? "submit gray" : "submit"}
+              className={action === "Login" ? "submit gray" : "submit"}
               onClick={() => {
                 console.log("SignUp Button Clicked button clicked");
                 setAction("SignUp");
@@ -142,7 +147,7 @@ const LoginSignup = (props) => {
               className={action === "SignUp" ? "submit gray" : "submit"}
               onClick={() => {
                 console.log("Login button clicked");
-                setAction("login");
+                setAction("Login");
                 handleLogin();
               }}
             >
