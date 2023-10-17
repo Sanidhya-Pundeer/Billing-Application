@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import "./LoginSignup.css";
 import DataTable from 'react-data-table-component';
 import Button from 'react-bootstrap/Button';
@@ -77,15 +77,9 @@ export default function UserPortal(props) {
     console.log('Pay clicked for row:', row);
   };
 
-  const handleLogout = () => {
-    console.log('Logout clicked');
-  };
 
   return (
     <>
-    <div className="topRightSection">
-        <span>{props.userEmail}</span>
-        <Button variant="danger" onClick={() => handleLogout()}>Logout</Button></div>
       <div className="mainHeading">Billing Application - User Portal</div>
       <div className="container">
         <DataTable columns={columns} data={data} fixedHeader></DataTable>
