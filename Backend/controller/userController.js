@@ -80,22 +80,33 @@ const registerController = async (req, res) => {
         const hashedPwd = encryptPassword.hasPwd(userPassword);
         console.log('Trying to insert user with email:', userMail);
 
-        const user = await userModel.create({
-            userName: userName,
-            userMail: userMail,
-            userPassword: hashedPwd,
-            userType:userType
-        });
-        if(user){
-            res.status(200).json({
-                message: 'Registration successful'
+        const exist = await userModel.findOne({userMail});
+
+        if(!exist){
+            const user = await userModel.create({
+                userName: userName,
+                userMail: userMail,
+                userPassword: hashedPwd,
+                userType:userType
             });
+            if(user){
+                res.status(200).json({
+                    message: 'Registration successful'
+                });
+            }
+            else {
+                res.status(400).json({
+                    message: 'Registration failed'
+                });
+            }
         }
-        else {
+        else{
             res.status(400).json({
-                message: 'Registration failed'
+                message: 'User already exists'
             });
         }
+
+        
     } catch (error) {
         if (error.code === 11000 && error.keyPattern && error.keyPattern.userMail) {
             res.status(400).json({ message: 'UserMail already exists' });

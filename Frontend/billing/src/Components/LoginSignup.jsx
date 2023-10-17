@@ -54,7 +54,7 @@ const LoginSignup = (props) => {
         navigate('/');
         console.log("Signup successful");
       } else { // Handle signup error
-        toast.error("Error signing up");
+        toast.error("User Already Exist or Error signing up");
         console.error("Error signing up");
       }
     } catch (error) { // Handle network error
@@ -100,7 +100,9 @@ const LoginSignup = (props) => {
 
   return (
     <>
+    <div className="mainHeading">Billing Application</div>
       <div className="container">
+      
         <div className="image-container">
           {action === "SignUp" ? (
             <img className="image" src={sigin} alt="" />
@@ -109,6 +111,7 @@ const LoginSignup = (props) => {
           )}
         </div>
         <div className="form-container">
+        
           <div className="header">
             <div className="text">{action}</div>
           </div>
@@ -128,7 +131,7 @@ const LoginSignup = (props) => {
               <img src={email} alt="" />
               <input
                 type="email"
-                placeholder="email"
+                placeholder="Email"
                 value={userMail}
                 onChange={(e) => setEmailValue(e.target.value)}/>
             </div>
