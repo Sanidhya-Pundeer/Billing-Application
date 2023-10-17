@@ -86,7 +86,6 @@ const registerController = async (req, res) => {
             userPassword: hashedPwd,
             userType:userType
         });
-
         if(user){
             res.status(200).json({
                 message: 'Registration successful'

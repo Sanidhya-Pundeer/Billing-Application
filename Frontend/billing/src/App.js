@@ -14,7 +14,6 @@ function App() {
         <Route path="/" element={<LoginSignup pageTitle="Billing-Login/SignUp" />} />
         <Route path="/Admin-Portal" element={<DisplayData pageTitle="Admin Portal" />} />
         <Route path="/User-portal" element={<UserPortal pageTitle="User Portal" />} />
-
       </Routes>
     </div>
   </Router>
