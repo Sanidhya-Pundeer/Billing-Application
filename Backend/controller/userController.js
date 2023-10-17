@@ -57,10 +57,8 @@ const loginController = async (req, res) => {
         const isPasswordValid = encryptPassword.matchPwd(userPassword, user.userPassword);
         if (isPasswordValid) {
             if (userType === 'ADMIN') {
-                console.log("request forwarded to admin login")
                 return adminLogin({...req, body: { ...req.body, userType }}, res);
             } else {
-                console.log("request forwarded to user login")
                 return userLogin({...req, body: { ...req.body, userType }}, res);
             }            
         }

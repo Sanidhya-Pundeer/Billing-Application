@@ -87,7 +87,11 @@ const LoginSignup = (props) => {
 
       if (response.ok) { // Login successful, handle success
         toast.success("Login successful");
-        navigate('/display-data');
+      if (userType === "ADMIN") {
+        navigate('/Admin-Portal', { state: { userEmail: userMail } });
+      } else {
+        navigate('/User-Portal', { state: { userEmail: userMail } });
+      }
         console.log("Login successful");
       } else { // Handle login error
         toast.error("Error logging in");
