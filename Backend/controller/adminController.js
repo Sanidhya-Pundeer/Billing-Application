@@ -21,5 +21,5 @@ const billCreation = async (req, res) => {
     }
 };
 
-
+module.exports = {billCreation};
 
