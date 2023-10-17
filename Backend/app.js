@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const connection=require('./connection');
 const userRouter=require('./routes/userRoutes')
+const adminRouter=require('./routes/adminRoutes')
 const app = express();
 
 // Enable CORS

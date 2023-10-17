@@ -5,5 +5,6 @@ const userRouter = express.Router();
 
 userRouter.post('/login', loginController);
 userRouter.post('/register', registerController);
-userRouter.put('/pay/:id', payController);
+userRouter.put('/pay/:id', payController); 
+
 module.exports = userRouter; 
