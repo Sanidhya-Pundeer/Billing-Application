@@ -1,4 +1,5 @@
 const userModel = require('../model/userModel');
+const billModel = require('../model/billModel');
 const encryptPassword = require('../utils/bcrypt');
 
 const adminLogin = async (req, res) => {
@@ -114,5 +115,23 @@ const registerController = async (req, res) => {
         }
     }
 };    
+const payController = async (req, res) => {
+    const {billId} = req.params;
+    const {status} = req.body;
+    try {
+        const updatedBill = await billModel.findOneAndUpdate(billId, 
+            {status}, 
+            {new: true});
+            if(!updatedBill){
+                return res.status(400).json({message: 'Bill not found'});
+            }
+            else{
+                return res.status(200).json({message: 'Bill updated successfully'});
+            }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'Internal error'});
+    }
+};
 
-module.exports = {loginController, registerController};
+module.exports = {loginController, registerController,payController};

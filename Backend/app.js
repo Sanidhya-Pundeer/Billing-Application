@@ -11,6 +11,7 @@ app.use(express.json());
 connection();
 
 app.use('/api',userRouter)
+app.use('/api',adminRouter)
 
 app.listen(5000, (error) => {
     if (error) {
