@@ -23,26 +23,56 @@ const billCreation = async (req, res) => {
 
 const updateBills= async(req,res)=>{
     const id=req.params.id
-    const {billTitle, userEmail, billAmount, billDueDate, status}=req.body
+    //bill id, bill title, user email, bill amount, bill gen date, bill due date, status;
+    const {billTitle, userEmail, billAmount,billGenDate, billDueDate, status}=req.body
     try {
-        const task=await billModel.findByIdAndUpdate(id,{
-            title:title,
-            desc:desc,
-            doc:date,
-            userName:username
+        const task=await billModel.findByIdAndUpdate(id,
+            {
+            billTitle:billTitle,
+            userEmail:userEmail,
+            billAmount:billAmount,
+            billGenDate:billGenDate,
+            billDueDate: billDueDate,
+            status:status
         }, 
         {new:true}  //return updated task
-        )
+        );
         if (!task) {
             res.status(404).json({message:"Task not found"})
         } else {
             res.status(200).json({message:"Task updated"})
         }
        } catch (error) {
-        res.status(500).json({message:'Server error'})
+        res.status(500).json({message:'Internal Server error'})
     }
 }
+const deleteBills= async(req,res)=>{
+    const id=req.params.id
+    try {
+        const task=await billModel.findByIdAndDelete(new mongoose.Types.ObjectId(id));
+        if (!task) {
+            res.status(404).json({message:"Task not found"})
+        } else {
+            res.status(200).json({message:"Task deleted"})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message:'Internal Server error'})
+    }
+};
 
+const getAllBills = async (req, res) => {
+    try {
+        const bills = await billModel.find();
+        if(!bills){
+            return res.status(400).json({message: 'No bills found'});
+        }else{
+            return res.status(200).json(bills);
+        }
+    } catch (error) {
+        res.status(500).json({message: 'Internal error'});
+    }
+};
 
-module.exports = {billCreation, updateBills}
+module.exports = {billCreation, updateBills, deleteBills, getAllBills}
 
