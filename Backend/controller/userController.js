@@ -139,14 +139,18 @@ const payController = async (req, res) => {
 
 const getUserBills = async (req, res) => {
     const{userMail} = req.params;
+
     try {
-        const bills = await billModel.find({userMail});
-        if(!bills){
-            return res.status(400).json({message: 'No bills found'});
+        const bills = await billModel.find({ userEmail: userMail });
+        
+        if (!bills || bills.length === 0) {
+            return res.status(404).json({ message: 'No bills found' });
         }
         else{
-            return res.status(200).json(bills);
+            res.status(200).json(bills);
+
         }
+
     } catch (error) {
         res.status(500).json({message: 'Internal error'});
     }
