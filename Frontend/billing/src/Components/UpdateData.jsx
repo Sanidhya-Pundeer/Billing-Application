@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
 import "./LoginSignup.css";
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'; 
+import { useNavigate } from "react-router-dom";
+
 
 export default function UpdateData(props) {
   useEffect(() => {
@@ -10,25 +15,33 @@ export default function UpdateData(props) {
   }, [props.pageTitle]);
 
   const location = useLocation();
+  const navigate = useNavigate();
 
-  const [BillId, setBillId] = useState(location.state.billId);
-  const [BillTitle, setBillTitle] = useState(location.state.billTitle);
+  const [BillId] = useState(location.state.billId);
+  const [billTitle, setBillTitle] = useState(location.state.billTitle);
   const [billAmount, setBillAmount] = useState(location.state.billAmount);
-  const [dueDate, setDueDate] = useState(location.state.dueDate);
   const [status, setStatus] = useState(location.state.status);
-  const [userMail, setEmailValue] = useState(location.state.userMail);
-
+  const [userEmail, setEmailValue] = useState(location.state.userEmail); 
+  
   const handleUpdate = () => {
-
     const updatedData = {
-      BillId,
-      BillTitle,
+      billTitle,
       billAmount,
-      dueDate,
       status,
-      userMail
+      userEmail
     };
     console.log(updatedData);   
+
+    axios.put(`http://localhost:5000/api/updateBills/${BillId}`, updatedData)
+      .then(response => {
+        console.log('Update successful:', response.data);
+        toast.success("Data Updated Successfully");
+        navigate('/Admin-Portal');
+      })
+      .catch(error => {
+        console.error('Error updating data:', error);
+        toast.error("Error updating data");
+      });
   };
 
   return (
@@ -42,7 +55,7 @@ export default function UpdateData(props) {
               <input
                 type="text"
                 placeholder="Bill Title"
-                value={BillTitle}
+                value={billTitle}
                 onChange={(e) => setBillTitle(e.target.value)}
               />
             </div>
@@ -58,14 +71,6 @@ export default function UpdateData(props) {
             <div className="input">
               <input
                 type="text"
-                placeholder="Due Date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-              />
-            </div>
-            <div className="input">
-              <input
-                type="text"
                 placeholder="Status"
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
@@ -73,9 +78,9 @@ export default function UpdateData(props) {
             </div>
             <div className="input">
               <input
-                type="mail"
+                type="email"
                 placeholder="User Mail"
-                value={userMail}
+                value={userEmail}
                 onChange={(e) => setEmailValue(e.target.value)}
               />
             </div>

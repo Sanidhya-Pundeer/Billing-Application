@@ -90,7 +90,9 @@ const LoginSignup = (props) => {
       if (userType === "ADMIN") {
         navigate('/Admin-Portal', { state: { userEmail: userMail } });
       } else {
-        navigate('/User-Portal', { state: { userEmail: userMail } });
+        navigate('/User-Portal', {state:{ 
+          userEmail: userMail,
+        },});
       }
         console.log("Login successful");
       } else { // Handle login error

@@ -3,11 +3,33 @@ import "./LoginSignup.css";
 import DataTable from 'react-data-table-component';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios'; 
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function UserPortal(props) {
+
+  const [data, setData] = useState([]);
+  const location = useLocation();
+  const m=location.state.userEmail;
+
   useEffect(() => {
     document.title = props.pageTitle;
-  }, [props.pageTitle]);
+    const fetchData = async () => {
+      try {
+
+        const response = await axios.get(`http://localhost:5000/api/getUserBills/${m}`);
+        setData(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [props.pageTitle,m]);
 
   const columns = [
     {
@@ -19,8 +41,8 @@ export default function UserPortal(props) {
       selector: row => row.billTitle
     },
     {
-      name: 'User Id',
-      selector: row => row.userId
+      name: 'User Email',
+      selector: row => row.userEmail
     },
     {
       name: 'Bill Amount',
@@ -28,11 +50,11 @@ export default function UserPortal(props) {
     },
     {
       name: 'Generated Date',
-      selector: row => row.generatedDate
+      selector: row => row.billGenDate
     },
     {
       name: 'Due Date',
-      selector: row => row.dueDate
+      selector: row => row.billDueDate
     },
     {
       name: 'Status',
@@ -44,7 +66,7 @@ export default function UserPortal(props) {
         <Button
           variant="success"
           onClick={() => handlePay(row)}
-          disabled={row.status !== 'Unpaid'} // Disable button if status is not 'Unpaid'
+          disabled={row.status !== 'UNPAID'} // Disable button if status is not 'Unpaid'
         >
           Pay
         </Button>
@@ -52,31 +74,19 @@ export default function UserPortal(props) {
     },
   ];
 
-  const data = [
-    {
-      billId: 1,
-      billTitle: 'Electricity',
-      userId: 1,
-      billAmount: 1000,
-      generatedDate: '2021-09-01',
-      dueDate: '2021-09-10',
-      status: 'Paid'
-    },
-    {
-      billId: 2,
-      billTitle: 'Water',
-      userId: 2,
-      billAmount: 500,
-      generatedDate: '2021-09-05',
-      dueDate: '2021-09-15',
-      status: 'Unpaid'
-    },
-  ];
+  const  handlePay = async (row) => {
+    try {
 
-  const handlePay = (row) => {
-    console.log('Pay clicked for row:', row);
+      const response=await axios.put(`http://localhost:5000/api/pay/${row.billId}`);
+      console.log(response.data);
+      toast.success("Payment Done !");
+      const response2 = await axios.get(`http://localhost:5000/api/getUserBills/${m}`);
+      setData(response2.data);
+      
+    } catch (error) {
+      console.error('Error updating payment:', error);
+    }
   };
-
 
   return (
     <>

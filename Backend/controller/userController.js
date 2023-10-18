@@ -148,7 +148,6 @@ const getUserBills = async (req, res) => {
         }
         else{
             res.status(200).json(bills);
-
         }
 
     } catch (error) {

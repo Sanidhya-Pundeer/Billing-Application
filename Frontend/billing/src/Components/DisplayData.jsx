@@ -1,16 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import "./LoginSignup.css";
 import { useNavigate } from "react-router-dom";
 import DataTable from 'react-data-table-component';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios'; 
 
 export default function DisplayData(props) {
 
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     document.title = props.pageTitle;
+
+    axios.get('http://localhost:5000/api/getAllBills')
+      .then(response => {
+        setData(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   }, [props.pageTitle]);
 
 
@@ -25,7 +37,7 @@ export default function DisplayData(props) {
     },
     {
       name: 'User Mail',
-      selector: row => row.userMail
+      selector: row => row.userEmail
     },
     {
       name: 'Bill Amount',
@@ -33,11 +45,11 @@ export default function DisplayData(props) {
     },
     {
       name: 'Generated Date',
-      selector: row => row.generatedDate
+      selector: row => row.billGenDate
     },
     {
       name: 'Due Date',
-      selector: row => row.dueDate
+      selector: row => row.billDueDate
     },
     {
       name: 'Status',
@@ -53,22 +65,10 @@ export default function DisplayData(props) {
     }
   ];
 
-  const data = [
-    {
-      billId: 1,
-      billTitle: 'Electricity',
-      userMail: 'sanyam@gmail.com',
-      billAmount: 1000,
-      generatedDate: '2021-09-01',
-      dueDate: '2021-09-10',
-      status: 'Paid'
-    }
-  ];
-
   const handleUpdate = (row) => {
     const isConfirmed = window.confirm('Are you sure you want to update this item?');
     if (isConfirmed) {
-      console.log('Update confirmed for row:', row);// Navigate to the "updateForm" page using React Router
+      console.log('Update confirmed for row:', row);
       navigate('/Admin/UpdateData', {state:{ 
         billId: row.billId,
         billTitle: row.billTitle,
@@ -76,7 +76,7 @@ export default function DisplayData(props) {
         generatedDate: row.generatedDate,
         dueDate: row.dueDate,
         status: row.status,
-        userMail: row.userMail,
+        userEmail: row.userEmail,
       },});
     } else {
       console.log('Update canceled for row:', row);
@@ -90,8 +90,25 @@ export default function DisplayData(props) {
   const handleDelete = (row) => {
     const isConfirmed = window.confirm('Are you sure you want to Delete this item?');
     if (isConfirmed) {
-      console.log('Delete confirmed for row:', row);// Navigate to the "updateForm" page using React Router
-      navigate('/UpdateData');
+      console.log('Delete confirmed for row:', row);
+
+      axios.delete(`http://localhost:5000/api/deleteBills/${row.billId}`)
+        .then(response => {
+          console.log('Delete successful:', response.data);
+          toast.success("Data Added Deleted Successfully for Bill Id: "+row.billId);
+          axios.get('http://localhost:5000/api/getAllBills')
+            .then(response => {
+              setData(response.data);
+            })
+            .catch(error => {
+              toast.error("Error fetching data after deletion");
+              console.error('Error fetching data after deletion:', error);
+            });
+        })
+        .catch(error => {
+          toast.error("Error deleting data");
+          console.error('Error deleting data:', error);
+        });
     } else {
       console.log('Delete canceled for row:', row);
     }

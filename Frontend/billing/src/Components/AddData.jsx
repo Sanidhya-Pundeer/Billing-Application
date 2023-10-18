@@ -1,24 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import "./LoginSignup.css";
 import Button from 'react-bootstrap/Button';
+import axios from 'axios'; 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 export default function AddData(props) {
     useEffect(() => {
         document.title = props.pageTitle;
       }, [props.pageTitle]);
 
-  const [BillTitle, setBillTitle] = useState('');
+  const navigate = useNavigate();
+  const [billTitle, setBillTitle] = useState('');
   const [billAmount, setBillAmount] = useState('');
-  const [userMail, setEmailValue] = useState('');
+  const [userEmail, setEmailValue] = useState('');
 
   const handleAdd = () => {
     const newData = {
-      BillTitle,
+        billTitle,
       billAmount,
-      userMail
+      userEmail
     };
     console.log(newData);
-    // Add your logic to save the new data
+    
+    axios.post('http://localhost:5000/api/billCreation', newData)
+      .then(response => {
+        console.log(response.data); 
+        toast.success("Data Added Successfully");
+        navigate('/Admin-Portal');
+      })
+      .catch(error => {
+        toast.error("Error adding data");
+        console.error('Error adding data:', error);
+      });
   };
   return (
     <>
@@ -31,7 +46,7 @@ export default function AddData(props) {
               <input
                 type="text"
                 placeholder="Bill Title"
-                value={BillTitle}
+                value={billTitle}
                 onChange={(e) => setBillTitle(e.target.value)}
               />
             </div>
@@ -47,7 +62,7 @@ export default function AddData(props) {
               <input
                 type="mail"
                 placeholder="User Mail"
-                value={userMail}
+                value={userEmail}
                 onChange={(e) => setEmailValue(e.target.value)}
               />
             </div>
@@ -56,6 +71,5 @@ export default function AddData(props) {
         </div>
       </div>
     </>
-
   )
 }
