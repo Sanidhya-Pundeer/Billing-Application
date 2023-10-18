@@ -16,6 +16,7 @@ export default function AddData(props) {
   const [billTitle, setBillTitle] = useState('');
   const [billAmount, setBillAmount] = useState('');
   const [userEmail, setEmailValue] = useState('');
+  const token = localStorage.getItem('token');
 
   const handleAdd = () => {
     const newData = {
@@ -23,11 +24,14 @@ export default function AddData(props) {
       billAmount,
       userEmail
     };
-    console.log(newData);
     
-    axios.post('http://localhost:5000/api/billCreation', newData)
+    axios.post('http://localhost:5000/api/billCreation', newData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+  },
+})
       .then(response => {
-        console.log(response.data); 
         toast.success("Data Added Successfully");
         navigate('/Admin-Portal');
       })

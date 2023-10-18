@@ -19,8 +19,12 @@ export default function UserPortal(props) {
     document.title = props.pageTitle;
     const fetchData = async () => {
       try {
-
-        const response = await axios.get(`http://localhost:5000/api/getUserBills/${m}`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`http://localhost:5000/api/getUserBills/${m}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setData(response.data);
         console.log(response.data);
       } catch (error) {
@@ -66,7 +70,7 @@ export default function UserPortal(props) {
         <Button
           variant="success"
           onClick={() => handlePay(row)}
-          disabled={row.status !== 'UNPAID'} // Disable button if status is not 'Unpaid'
+          disabled={row.status !== 'UNPAID'}
         >
           Pay
         </Button>
@@ -74,19 +78,30 @@ export default function UserPortal(props) {
     },
   ];
 
-  const  handlePay = async (row) => {
+  const handlePay = async (row) => {
     try {
-
-      const response=await axios.put(`http://localhost:5000/api/pay/${row.billId}`);
-      console.log(response.data);
-      toast.success("Payment Done !");
-      const response2 = await axios.get(`http://localhost:5000/api/getUserBills/${m}`);
+      const token = localStorage.getItem('token');
+  
+      const response = await axios.put(`http://localhost:5000/api/pay/${row.billId}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      toast.success('Payment Done!');
+  
+      const response2 = await axios.get(`http://localhost:5000/api/getUserBills/${m}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
       setData(response2.data);
-      
     } catch (error) {
       console.error('Error updating payment:', error);
     }
   };
+  
 
   return (
     <>

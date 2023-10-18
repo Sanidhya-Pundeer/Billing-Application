@@ -12,11 +12,17 @@ export default function DisplayData(props) {
 
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     document.title = props.pageTitle;
-
-    axios.get('http://localhost:5000/api/getAllBills')
+    const token = localStorage.getItem('token');
+    
+    axios.get('http://localhost:5000/api/getAllBills', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(response => {
         setData(response.data);
       })
@@ -92,11 +98,19 @@ export default function DisplayData(props) {
     if (isConfirmed) {
       console.log('Delete confirmed for row:', row);
 
-      axios.delete(`http://localhost:5000/api/deleteBills/${row.billId}`)
+      axios.delete(`http://localhost:5000/api/deleteBills/${row.billId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then(response => {
           console.log('Delete successful:', response.data);
           toast.success("Data Added Deleted Successfully for Bill Id: "+row.billId);
-          axios.get('http://localhost:5000/api/getAllBills')
+          axios.get('http://localhost:5000/api/getAllBills', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
             .then(response => {
               setData(response.data);
             })

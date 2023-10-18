@@ -22,6 +22,7 @@ export default function UpdateData(props) {
   const [billAmount, setBillAmount] = useState(location.state.billAmount);
   const [status, setStatus] = useState(location.state.status);
   const [userEmail, setEmailValue] = useState(location.state.userEmail); 
+  const token = localStorage.getItem('token');
   
   const handleUpdate = () => {
     const updatedData = {
@@ -32,7 +33,12 @@ export default function UpdateData(props) {
     };
     console.log(updatedData);   
 
-    axios.put(`http://localhost:5000/api/updateBills/${BillId}`, updatedData)
+    axios.put(`http://localhost:5000/api/updateBills/${BillId}`, updatedData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
       .then(response => {
         console.log('Update successful:', response.data);
         toast.success("Data Updated Successfully");
