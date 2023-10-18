@@ -137,5 +137,21 @@ const payController = async (req, res) => {
     }
 };
 
+const getUserBills = async (req, res) => {
+    const{id} = req.params;
+    try {
+        const bills = await billModel.find({userEmail:id});
+        if(bills.length === 0) {
+            return res.status(400).json({message: 'No bills found'});
+        }
+        else {
+            return res.status(200).json({bills});
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: 'Internal Server error'});
+    }
+};
 
-module.exports = {loginController, registerController,payController};
+
+module.exports = {loginController, registerController,payController,getUserBills};

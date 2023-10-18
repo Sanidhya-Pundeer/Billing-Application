@@ -3,26 +3,31 @@ const billModel = require('../model/billModel');
 const encryptPassword = require('../utils/bcrypt');
 
 const billCreation = async (req, res) => {
-    const {billId, billTitle, userEmail, billAmount, billGenDate, billDueDate, status} = req.body;
-    console.log(req.body);
+    const {billTitle, userEmail, billAmount} = req.body;
+    const uuid = v4();
+    const billId = uuid.slice(0, 8);
+    const billGenDate = new Date();
+    const status = 'unpaid';
+    const billDueDate = new Date();
+    billDueDate.setDate(billGenDate.getDate() + 7);
+
     try {
         const bill = await billModel.findOne({billId});
         if(bill) {
             return res.status(400).json({message: 'Bill already exists'});
-        }
-        else{
+        } else {
             const newBill = new billModel({billId, billTitle, userEmail, billAmount, billGenDate, billDueDate, status});
             await newBill.save();
             return res.status(200).json({message: 'Bill created successfully'});
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({message: 'Internal error'});
     }
 };
 
 const updateBills= async(req,res)=>{
-    const id=req.params.id
+    const {id}=req.params.id
     //bill id, bill title, user email, bill amount, bill gen date, bill due date, status;
     const {billTitle, userEmail, billAmount,billGenDate, billDueDate, status}=req.body
     try {
@@ -47,7 +52,7 @@ const updateBills= async(req,res)=>{
     }
 }
 const deleteBills= async(req,res)=>{
-    const id=req.params.id
+    const {id}=req.params.id
     try {
         const task=await billModel.findByIdAndDelete(new mongoose.Types.ObjectId(id));
         if (!task) {
