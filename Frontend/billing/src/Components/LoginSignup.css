@@ -35,6 +35,11 @@
     width: 87%;
     height: 50vh;
   }
+
+  .image3{
+    width: 50%;
+    
+  }
   
   .header {
     display: flex;

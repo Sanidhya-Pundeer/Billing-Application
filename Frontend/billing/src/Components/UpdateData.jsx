@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'; 
 import { useNavigate } from "react-router-dom";
-
+import updateData from "./Assets/updateData.jpg"
 
 export default function UpdateData(props) {
   useEffect(() => {
@@ -48,6 +48,9 @@ export default function UpdateData(props) {
     <>
       <div className="mainHeading">Admin - Update for Bill Id : {BillId}</div>
       <div className="container">
+      <div className="image-container">
+      <img className="image3" src={updateData} alt="" />
+      </div>
         <div className="form-container">
           <div className="header"></div>
           <div className="inputs">

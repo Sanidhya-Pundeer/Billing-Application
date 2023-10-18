@@ -5,6 +5,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
+import addData from "./Assets/addData.png"
 
 export default function AddData(props) {
     useEffect(() => {
@@ -39,6 +40,9 @@ export default function AddData(props) {
     <>
       <div className="mainHeading">Admin - Add Data</div>
       <div className="container">
+      <div className="image-container">
+      <img className="image3" src={addData} alt="" />
+      </div>
         <div className="form-container">
           <div className="header"></div>
           <div className="inputs">
