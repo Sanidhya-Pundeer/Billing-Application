@@ -21,5 +21,28 @@ const billCreation = async (req, res) => {
     }
 };
 
-module.exports = {billCreation};
+const updateBills= async(req,res)=>{
+    const id=req.params.id
+    const {billTitle, userEmail, billAmount, billDueDate, status}=req.body
+    try {
+        const task=await billModel.findByIdAndUpdate(id,{
+            title:title,
+            desc:desc,
+            doc:date,
+            userName:username
+        }, 
+        {new:true}  //return updated task
+        )
+        if (!task) {
+            res.status(404).json({message:"Task not found"})
+        } else {
+            res.status(200).json({message:"Task updated"})
+        }
+       } catch (error) {
+        res.status(500).json({message:'Server error'})
+    }
+}
+
+
+module.exports = {billCreation, updateBills}
 
