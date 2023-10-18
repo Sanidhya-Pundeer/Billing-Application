@@ -27,16 +27,16 @@ const billCreation = async (req, res) => {
 };
 
 const updateBills= async(req,res)=>{
-    const {id}=req.params.id
+    const{id} = req.params;
+    console.log(id);
     //bill id, bill title, user email, bill amount, bill gen date, bill due date, status;
-    const {billTitle, userEmail, billAmount,billGenDate, billDueDate, status}=req.body
+    const {billTitle, userEmail, billAmount, billDueDate, status}=req.body
     try {
-        const task=await billModel.findByIdAndUpdate(id,
+        const task=await billModel.findOneAndUpdate({ billId: id },
             {
             billTitle:billTitle,
             userEmail:userEmail,
             billAmount:billAmount,
-            billGenDate:billGenDate,
             billDueDate: billDueDate,
             status:status
         }, 
@@ -48,13 +48,14 @@ const updateBills= async(req,res)=>{
             res.status(200).json({message:"Task updated"})
         }
        } catch (error) {
+        console.log(error);
         res.status(500).json({message:'Internal Server error'})
     }
 }
 const deleteBills= async(req,res)=>{
-    const {id}=req.params.id
+    const {id}=req.params;
     try {
-        const task=await billModel.findByIdAndDelete(new mongoose.Types.ObjectId(id));
+        const task=await billModel.findOneAndDelete({billId:id});
         if (!task) {
             res.status(404).json({message:"Task not found"})
         } else {
