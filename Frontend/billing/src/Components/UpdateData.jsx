@@ -1,36 +1,43 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom'
 import "./LoginSignup.css";
+import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function UpdateData(props) {
   useEffect(() => {
-    console.log(props);
     document.title = props.pageTitle;
   }, [props.pageTitle]);
 
-  const [BillId, setBillId] = useState(props.billId || ''); // Set initial value from props
-  const [BillTitle, setBillTitle] = useState(props.billTitle || '');
-  const [billAmount, setBillAmount] = useState(props.billAmount || '');
-  const [generatedDate, setGeneratedDate] = useState(props.generatedDate || '');
-  const [dueDate, setDueDate] = useState(props.dueDate || '');
-  const [status, setStatus] = useState(props.status || '');
-  const [userMail, setEmailValue] = useState(props.userMail || '');
+  const location = useLocation();
+
+  const [BillId, setBillId] = useState(location.state.billId);
+  const [BillTitle, setBillTitle] = useState(location.state.billTitle);
+  const [billAmount, setBillAmount] = useState(location.state.billAmount);
+  const [dueDate, setDueDate] = useState(location.state.dueDate);
+  const [status, setStatus] = useState(location.state.status);
+  const [userMail, setEmailValue] = useState(location.state.userMail);
+
+  const handleUpdate = () => {
+
+    const updatedData = {
+      BillId,
+      BillTitle,
+      billAmount,
+      dueDate,
+      status,
+      userMail
+    };
+    console.log(updatedData);   
+  };
 
   return (
     <>
-      <div className="mainHeading">Admin - Update</div>
+      <div className="mainHeading">Admin - Update for Bill Id : {BillId}</div>
       <div className="container">
         <div className="form-container">
           <div className="header"></div>
           <div className="inputs">
-            <div className="input">
-              <input
-                type="text"
-                placeholder="Bill Id"
-                value={BillId}
-                onChange={(e) => setBillId(e.target.value)}
-                readOnly // Make it read-only
-              />
-            </div>
             <div className="input">
               <input
                 type="text"
@@ -47,14 +54,7 @@ export default function UpdateData(props) {
                 onChange={(e) => setBillAmount(e.target.value)}
               />
             </div>
-            <div className="input">
-              <input
-                type="text"
-                placeholder="Generated Date"
-                value={generatedDate}
-                onChange={(e) => setGeneratedDate(e.target.value)}
-              />
-            </div>
+            
             <div className="input">
               <input
                 type="text"
@@ -79,6 +79,7 @@ export default function UpdateData(props) {
                 onChange={(e) => setEmailValue(e.target.value)}
               />
             </div>
+            <Button variant="primary" onClick={() => handleUpdate()}>Update</Button>
           </div>
         </div>
       </div>
