@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import "./LoginSignup.css";
+import { useNavigate } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,6 +10,8 @@ export default function DisplayData(props) {
   useEffect(() => {
     document.title = props.pageTitle;
   }, [props.pageTitle]);
+
+  const navigate = useNavigate();
 
   const columns = [
     {
@@ -20,8 +23,8 @@ export default function DisplayData(props) {
       selector: row => row.billTitle
     },
     {
-      name: 'User Id',
-      selector: row => row.userId
+      name: 'User Mail',
+      selector: row => row.userMail
     },
     {
       name: 'Bill Amount',
@@ -53,7 +56,7 @@ export default function DisplayData(props) {
     {
       billId: 1,
       billTitle: 'Electricity',
-      userId: 1,
+      userMail: 'sanyam@gmail.com',
       billAmount: 1000,
       generatedDate: '2021-09-01',
       dueDate: '2021-09-10',
@@ -62,23 +65,37 @@ export default function DisplayData(props) {
   ];
 
   const handleUpdate = (row) => {
-    console.log('Update clicked for row:', row);
+    const isConfirmed = window.confirm('Are you sure you want to update this item?');
+    if (isConfirmed) {
+      console.log('Update confirmed for row:', row);// Navigate to the "updateForm" page using React Router
+      navigate('/UpdateData', {
+        state: {
+          billId: row.billId,
+          billTitle: row.billTitle,
+          billAmount: row.billAmount,
+          generatedDate: row.generatedDate,
+          dueDate: row.dueDate,
+          status: row.status,
+          userMail: row.userMail,
+        },
+      });
+    } else {
+      console.log('Update canceled for row:', row);
+    }
   };
 
   const handleDelete = (row) => {
-    console.log('Delete clicked for row:', row);
-  };
-
-  const handleLogout = () => {
-    console.log('Logout clicked');
+    const isConfirmed = window.confirm('Are you sure you want to Delete this item?');
+    if (isConfirmed) {
+      console.log('Delete confirmed for row:', row);// Navigate to the "updateForm" page using React Router
+      navigate('/UpdateData');
+    } else {
+      console.log('Delete canceled for row:', row);
+    }
   };
 
   return (
     <>
-      <div className="topRightSection">
-        <span>{props.userEmail}</span>
-        <Button variant="danger" onClick={() => handleLogout()}>Logout</Button>
-      </div>
       <div className="mainHeading">Billing Application - Admin Portal</div>
       <div className="container">
         <DataTable columns={columns} data={data} fixedHeader></DataTable>
