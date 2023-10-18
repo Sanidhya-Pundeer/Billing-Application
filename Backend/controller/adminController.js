@@ -28,7 +28,6 @@ const billCreation = async (req, res) => {
 
 const updateBills= async(req,res)=>{
     const{id} = req.params;
-    console.log(id);
 
     const {billTitle, userEmail, billAmount, status}=req.body
     try {

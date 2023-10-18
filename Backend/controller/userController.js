@@ -77,8 +77,7 @@ const registerController = async (req, res) => {
     try {
         const {userName, userMail, userPassword,userType} = req.body;
         const hashedPwd = encryptPassword.hasPwd(userPassword);
-        console.log('Trying to insert user with email:', userMail);
-
+    
         const exist = await userModel.findOne({userMail});
 
         if(!exist){
