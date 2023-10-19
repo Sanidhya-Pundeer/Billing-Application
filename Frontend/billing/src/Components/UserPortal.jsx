@@ -8,12 +8,14 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
 
 export default function UserPortal(props) {
 
   const [data, setData] = useState([]);
   const location = useLocation();
   const m=location.state.userEmail;
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = props.pageTitle;
@@ -87,6 +89,7 @@ export default function UserPortal(props) {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log('Update successful:', response.data); 
   
       toast.success('Payment Done!');
   
@@ -101,11 +104,23 @@ export default function UserPortal(props) {
       console.error('Error updating payment:', error);
     }
   };
+
+  const handleLogout=()=>{
+    const isConfirmed = window.confirm('Are you sure you want to Logout?');
+    if (isConfirmed) {
+      localStorage.removeItem('token');
+      navigate('/');
+      toast.success("Logged out successfully");
+    } else {
+      console.log('Logout canceled');
+    }
+  };
   
 
   return (
     <>
       <div className="mainHeading">Billing Application - User Portal</div>
+      <Button variant="danger" onClick={() => handleLogout()}>Logout</Button>
       <div className="container">
         <DataTable columns={columns} data={data} fixedHeader></DataTable>
       </div>

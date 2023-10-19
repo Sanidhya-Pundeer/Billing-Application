@@ -13,11 +13,12 @@ export default function DisplayData(props) {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const token = localStorage.getItem('token');
-
+  
   useEffect(() => {
     document.title = props.pageTitle;
     const token = localStorage.getItem('token');
-    
+
+  
     axios.get('http://localhost:5000/api/getAllBills', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -128,9 +129,21 @@ export default function DisplayData(props) {
     }
   };
 
+  const handleLogout=()=>{
+    const isConfirmed = window.confirm('Are you sure you want to Logout?');
+    if (isConfirmed) {
+      localStorage.removeItem('token');
+      toast.success("Logged out successfully");
+      navigate('/');
+    } else {
+      console.log('Logout canceled');
+    }
+  };
+
   return (
     <>
       <div className="mainHeading">Billing Application - Admin Portal</div>
+      <Button variant="danger" onClick={() => handleLogout()}>Logout</Button>
       <Button variant="success" onClick={() => handleAdd()}>Add Data</Button>
       <div className="container">
         <DataTable columns={columns} data={data} fixedHeader></DataTable>

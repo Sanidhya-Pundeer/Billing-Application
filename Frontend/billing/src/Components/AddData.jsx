@@ -40,9 +40,22 @@ export default function AddData(props) {
         console.error('Error adding data:', error);
       });
   };
+
+  const handleLogout=()=>{
+    const isConfirmed = window.confirm('Are you sure you want to Logout?');
+    if (isConfirmed) {
+      localStorage.removeItem('token');
+      navigate('/');
+      toast.success("Logged out successfully");
+    } else {
+      console.log('Logout canceled');
+    }
+  };
+
   return (
     <>
       <div className="mainHeading">Admin - Add Data</div>
+      <Button variant="danger" onClick={() => handleLogout()}>Logout</Button>
       <div className="container">
       <div className="image-container">
       <img className="image3" src={addData} alt="" />
