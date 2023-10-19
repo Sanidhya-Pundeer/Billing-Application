@@ -1,4 +1,4 @@
-# Billing Application - MERN Stack
+<img width="960" alt="Screenshot 2023-10-19 091901" src="https://github.com/sanyam40/Billing-Application/assets/87993985/2a001da5-88d9-4f5c-b9fb-59247e373e1f"># Billing Application - MERN Stack
 
 This Billing Application is a comprehensive solution created using the MERN (MongoDB, Express.js, React.js, Node.js) stack. The application facilitates bill generation, updating, and deletion for administrators while allowing users to pay their bills conveniently. The system also includes a user authentication system with login and signup functionalities.
 
@@ -22,43 +22,14 @@ This Billing Application is a comprehensive solution created using the MERN (Mon
    - Login: Secure login functionality for both admins and users.
    - Signup: New users can register for an account with a valid email address.
 
-## Installation
+# Screenshots
+<img width="960" alt="Screenshot 2023-10-19 091851" src="https://github.com/sanyam40/Billing-Application/assets/87993985/dd213291-dbb5-4e5e-ae03-22899984d47a">
+<img width="960" alt="Screenshot 2023-10-19 091901" src="https://github.com/sanyam40/Billing-Application/assets/87993985/370671a9-2ba8-4802-a307-624f99ed84dd">
+<img width="960" alt="Screenshot 2023-10-19 091914" src="https://github.com/sanyam40/Billing-Application/assets/87993985/3fee29dc-280c-439a-9568-2346bfd6f327">
+<img width="960" alt="Screenshot 2023-10-19 091928" src="https://github.com/sanyam40/Billing-Application/assets/87993985/79b3123d-8451-4b7e-b862-19d7cb1ee5ef">
+<img width="960" alt="Screenshot 2023-10-19 091953" src="https://github.com/sanyam40/Billing-Application/assets/87993985/a8712df9-8780-4b85-9d6e-49a0ccf81139">
+<img width="960" alt="Screenshot 2023-10-19 092051" src="https://github.com/sanyam40/Billing-Application/assets/87993985/38dafa7a-edd7-40e6-a570-42c19081003e">
 
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/your-username/billing-app.git
-   ```
 
-2. **Navigate to the Project Directory:**
-   ```bash
-   cd billing-app
-   ```
 
-3. **Install Dependencies:**
-   ```bash
-   # Install server dependencies
-   npm install
 
-   # Navigate to the client directory and install client dependencies
-   cd client
-   npm install
-   ```
-
-4. **Run the Application:**
-   ```bash
-   # Run the server
-   npm start
-
-   # Navigate to the client directory and start the React app
-   cd client
-   npm start
-   ```
-
-6. **Access the Application:**
-   - Open a web browser and go to `http://localhost:3000` to access the application.
-
-## Project Structure
-
-- `client`: Contains the React.js frontend code.
-- `server`: Contains the Node.js and Express.js backend code.
-- `database`: Includes database-related scripts and configurations.
