@@ -23,7 +23,6 @@ This Billing Application is a comprehensive solution created using the MERN (Mon
    - Signup: New users can register for an account with a valid email address.
 
 # Screenshots
-<img width="960" alt="Screenshot 2023-10-19 091901" src="https://github.com/sanyam40/Billing-Application/assets/87993985/2a001da5-88d9-4f5c-b9fb-59247e373e1f">
 <img width="960" alt="Screenshot 2023-10-19 091851" src="https://github.com/sanyam40/Billing-Application/assets/87993985/dd213291-dbb5-4e5e-ae03-22899984d47a">
 <img width="960" alt="Screenshot 2023-10-19 091901" src="https://github.com/sanyam40/Billing-Application/assets/87993985/370671a9-2ba8-4802-a307-624f99ed84dd">
 <img width="960" alt="Screenshot 2023-10-19 091914" src="https://github.com/sanyam40/Billing-Application/assets/87993985/3fee29dc-280c-439a-9568-2346bfd6f327">
