@@ -1,4 +1,4 @@
-<img width="960" alt="Screenshot 2023-10-19 091901" src="https://github.com/sanyam40/Billing-Application/assets/87993985/2a001da5-88d9-4f5c-b9fb-59247e373e1f"># Billing Application - MERN Stack
+# Billing Application - MERN Stack
 
 This Billing Application is a comprehensive solution created using the MERN (MongoDB, Express.js, React.js, Node.js) stack. The application facilitates bill generation, updating, and deletion for administrators while allowing users to pay their bills conveniently. The system also includes a user authentication system with login and signup functionalities.
 
