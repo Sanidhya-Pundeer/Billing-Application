@@ -1,38 +1,41 @@
 const userModel = require('../model/userModel');
 const billModel = require('../model/billModel');
-const encryptPassword = require('../utils/bcrypt');
+const v4=require('uuid').v4;
 
 const billCreation = async (req, res) => {
-    const {billId, billTitle, userEmail, billAmount, billGenDate, billDueDate, status} = req.body;
-    console.log(req.body);
+    const {billTitle, userEmail, billAmount} = req.body;
+    const uuid = v4();
+    const billId = uuid.slice(0, 8);
+    const billGenDate = new Date();
+    const status = 'UNPAID';
+    const billDueDate = new Date();
+    billDueDate.setDate(billGenDate.getDate() + 7);
+
     try {
         const bill = await billModel.findOne({billId});
         if(bill) {
             return res.status(400).json({message: 'Bill already exists'});
-        }
-        else{
+        } else {
             const newBill = new billModel({billId, billTitle, userEmail, billAmount, billGenDate, billDueDate, status});
             await newBill.save();
             return res.status(200).json({message: 'Bill created successfully'});
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).json({message: 'Internal error'});
     }
 };
 
 const updateBills= async(req,res)=>{
-    const id=req.params.id
-    //bill id, bill title, user email, bill amount, bill gen date, bill due date, status;
-    const {billTitle, userEmail, billAmount,billGenDate, billDueDate, status}=req.body
+    const{id} = req.params;
+
+    const {billTitle, userEmail, billAmount, status}=req.body
     try {
-        const task=await billModel.findByIdAndUpdate(id,
+        const task=await billModel.findOneAndUpdate({ billId: id },
             {
             billTitle:billTitle,
             userEmail:userEmail,
             billAmount:billAmount,
-            billGenDate:billGenDate,
-            billDueDate: billDueDate,
             status:status
         }, 
         {new:true}  //return updated task
@@ -43,13 +46,14 @@ const updateBills= async(req,res)=>{
             res.status(200).json({message:"Task updated"})
         }
        } catch (error) {
+        console.log(error);
         res.status(500).json({message:'Internal Server error'})
     }
 }
 const deleteBills= async(req,res)=>{
-    const id=req.params.id
+    const {id}=req.params;
     try {
-        const task=await billModel.findByIdAndDelete(new mongoose.Types.ObjectId(id));
+        const task=await billModel.findOneAndDelete({billId:id});
         if (!task) {
             res.status(404).json({message:"Task not found"})
         } else {

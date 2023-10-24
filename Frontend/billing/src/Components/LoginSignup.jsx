@@ -86,12 +86,16 @@ const LoginSignup = (props) => {
       });
 
       if (response.ok) { // Login successful, handle success
+        const { token } = await response.json();
+        localStorage.setItem('token', token);
+        console.log("token", token);
         toast.success("Login successful");
-      if (userType === "ADMIN") {
-        navigate('/Admin-Portal', { state: { userEmail: userMail } });
-      } else {
-        navigate('/User-Portal', { state: { userEmail: userMail } });
-      }
+
+        if (userType === 'ADMIN') {
+          navigate('/Admin-Portal', { state: { userEmail: userMail} });
+        } else {
+          navigate('/User-Portal', { state: { userEmail: userMail} });
+        }
         console.log("Login successful");
       } else { // Handle login error
         toast.error("Error logging in");

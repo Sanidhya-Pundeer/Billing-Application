@@ -1,52 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import "./LoginSignup.css";
 import Button from 'react-bootstrap/Button';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios'; 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios'; 
 import { useNavigate } from "react-router-dom";
-import updateData from "./Assets/updateData.jpg"
+import addData from "./Assets/addData.png"
 
-export default function UpdateData(props) {
-  useEffect(() => {
-    document.title = props.pageTitle;
-  }, [props.pageTitle]);
+export default function AddData(props) {
+    useEffect(() => {
+        document.title = props.pageTitle;
+      }, [props.pageTitle]);
 
-  const location = useLocation();
   const navigate = useNavigate();
-
-  const [BillId] = useState(location.state.billId);
-  const [billTitle, setBillTitle] = useState(location.state.billTitle);
-  const [billAmount, setBillAmount] = useState(location.state.billAmount);
-  const [status, setStatus] = useState(location.state.status);
-  const [userEmail, setEmailValue] = useState(location.state.userEmail); 
+  const [billTitle, setBillTitle] = useState('');
+  const [billAmount, setBillAmount] = useState('');
+  const [userEmail, setEmailValue] = useState('');
   const token = localStorage.getItem('token');
-  
-  const handleUpdate = () => {
-    const updatedData = {
-      billTitle,
+
+  const handleAdd = () => {
+    const newData = {
+        billTitle,
       billAmount,
-      status,
       userEmail
     };
-    console.log(updatedData);   
-
-    axios.put(`http://localhost:5000/api/updateBills/${BillId}`, updatedData, {
+    
+    axios.post('http://localhost:5000/api/billCreation', newData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
-      },
-    })
+  },
+})
       .then(response => {
-        console.log('Update successful:', response.data);
-        toast.success("Data Updated Successfully");
+        toast.success("Data Added Successfully");
         navigate('/Admin-Portal');
       })
       .catch(error => {
-        console.error('Error updating data:', error);
-        toast.error("Error updating data");
+        toast.error("Error adding data");
+        console.error('Error adding data:', error);
       });
   };
 
@@ -63,11 +54,11 @@ export default function UpdateData(props) {
 
   return (
     <>
-      <div className="mainHeading">Admin - Update for Bill Id : {BillId}</div>
+      <div className="mainHeading">Admin - Add Data</div>
       <Button variant="danger" onClick={() => handleLogout()}>Logout</Button>
       <div className="container">
       <div className="image-container">
-      <img className="image3" src={updateData} alt="" />
+      <img className="image3" src={addData} alt="" />
       </div>
         <div className="form-container">
           <div className="header"></div>
@@ -88,27 +79,18 @@ export default function UpdateData(props) {
                 onChange={(e) => setBillAmount(e.target.value)}
               />
             </div>
-            
             <div className="input">
               <input
-                type="text"
-                placeholder="Status"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              />
-            </div>
-            <div className="input">
-              <input
-                type="email"
+                type="mail"
                 placeholder="User Mail"
                 value={userEmail}
                 onChange={(e) => setEmailValue(e.target.value)}
               />
             </div>
-            <Button variant="primary" onClick={() => handleUpdate()}>Update</Button>
+            <Button variant="primary" onClick={() => handleAdd()}>Add</Button>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }
