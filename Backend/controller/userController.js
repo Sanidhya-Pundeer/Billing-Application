@@ -5,6 +5,16 @@ require('dotenv').config();
 const secretKey = process.env.SECRET_KEY;
 const encryptPassword = require('../utils/bcrypt');
 
+const generateToken = (userId, userType) => {
+    const payload = {
+      user: {
+        id: userId,
+        type: userType,
+      },
+    };
+    return jwt.sign(payload,secretKey, { expiresIn: '1h' });
+  };
+
 const adminLogin = async (req, res) => {
     try {
         const { userMail, userPassword } = req.body;
@@ -16,18 +26,20 @@ const adminLogin = async (req, res) => {
 
         const isPasswordValid = encryptPassword.matchPwd(userPassword, admin.userPassword);
         if (isPasswordValid) {
+            const token = generateToken(admin._id, admin.userType);
             return res.status(200).json({
-                message: 'Admin login successful'
+              message: 'Admin login successful',
+              token,
             });
-        } else {
+          } else {
             return res.status(400).json({
-                message: 'Invalid admin credentials'
+              message: 'Invalid admin credentials',
             });
+          }
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ message: 'Internal error' });
         }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: 'Internal error' });
-    }
 };
 
 const userLogin = async (req, res) => {
@@ -40,13 +52,20 @@ const userLogin = async (req, res) => {
         }
         const isPasswordValid = encryptPassword.matchPwd(userPassword, user.userPassword);
         if (isPasswordValid) {
-            return res.status(200).json({ message: 'User login successful' });
-        } else {
-            return res.status(400).json({ message: 'Invalid user credentials' });
+            const token = generateToken(user._id, user.userType);
+            return res.status(200).json({
+              message: 'User login successful',
+              token,
+            });
+          } else {
+            return res.status(400).json({
+              message: 'Invalid User credentials',
+            });
+          }
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ message: 'Internal error' });
         }
-    } catch (error) {
-        res.status(500).json({ message: 'Internal error' });
-    }
 };
 
 
